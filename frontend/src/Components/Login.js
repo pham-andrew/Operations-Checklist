@@ -5,8 +5,11 @@ const Login = () => {
         e.preventDefault();
         let requestOptions ={
             method: 'POST',
-            username: e.target.username.value,
-            password: e.target.password.value
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: e.target.username.value,
+                password: e.target.password.value
+            })
         }
         fetch('http://localhost:3001/login', requestOptions)
     }
@@ -19,6 +22,7 @@ const Login = () => {
                 Password: <input type="text" id="password"/><br/>
                 <button type="submit" >Sign in</button>
             </form>
+            <p> Or <a href="/signup">sign up</a> if you don't have an account.</p>
         </div>
     )
 }
