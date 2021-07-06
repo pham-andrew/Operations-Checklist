@@ -1,10 +1,10 @@
-CREATE DATABASE checklistApp;
+CREATE DATABASE checklistapp;
 
-\c checklistApp
+\c checklistapp
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50),
+    username VARCHAR(50) UNIQUE,
     password VARCHAR(255),
     admin BOOLEAN
 );
@@ -45,3 +45,7 @@ CREATE TABLE todos_list(
     todos_id INT,
     checklist_id INT
 );
+
+
+--Dummy data
+INSERT INTO users ( username, password, admin) VALUES ( 'admin','superpassword',true);
