@@ -9,13 +9,12 @@ app.use(cors())
 app.use(express.json())
 app.use(session({secret: "super secret password", cookie: {maxAge: 60000}}))
 
-const u = require('./mock_data/users.json')
-const users = u.users
-const checklists = require('./mock_data/checklists.json')
-
 var cookieParser = require('cookie-parser')
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => {
+    console.log(req.session.user)
+    res.send('Hello World!')
+});
 
 app.get('/user', (req, res) => {
     db.query('SELECT * FROM users;')
@@ -24,19 +23,18 @@ app.get('/user', (req, res) => {
         res.json(data.rows)
         res.status(200)
     })
-    // res.end()
+    res.end()
 });
-// app.get('/checklists', (req, res) => res.send(checklists))
 
-// function checkSignIn(req, res){
-//     if(req.session.user){
-//        next();     //If session exists, proceed to page
-//     } else {
-//        var err = new Error("Not logged in!");
-//        console.log(req.session.user);
-//        next(err);  //Error, trying to access unauthorized page!
-//     }
-//  }
+app.get('/checklists', (req, res) => {
+    db.query('SELECT * FROM checklists;')
+    .then(data => {
+        console.log(data)
+        res.json(data.rows)
+        res.status(200)
+    })
+    res.end()
+});
 
 // app.post('/login', function(req, res){
 //     console.log(Users);
@@ -83,11 +81,25 @@ app.post('/user', (req, res) => {
     res.end()
 });
 
-// app.post('/checklists', (req, res) => {
-//     const postData = req.body
-//     //todo create a checklist
-//     res.end()
-// });
+app.post('/checklists', (req, res) => {
+    console.log(req.body)
+    if(req.body.author && req.body.title){
+        db.query(`INSERT INTO checklists ( author, title ) VALUES ('${req.body.author}', '${req.body.title}') RETURNING id;`)
+        .then(data => {
+            console.log(data.rows[0].id)
+            res.status(200)
+        })
+        //chain then for each insert todo
+    }
+    else
+        res.status(400)
+    res.end()
+});
+
+// author title, array called todos, each todo is an obj with order number and text
+//insert into checklist table
+// get id of the checklist
+//todo tables,
 
 // app.post('/assignUsers', (req, res) => {
 //     const postData = req.body

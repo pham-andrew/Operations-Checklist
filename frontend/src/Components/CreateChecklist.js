@@ -7,8 +7,8 @@ function CreateChecklist(){
 
     const addStep = (e) =>{
         e.preventDefault()
-        setChecklist([...Checklist, {todo: e.target.form.item.value, order: Checklist.length+1}])
-        console.log(Checklist)
+        setChecklist([...Checklist, {todo: e.target.form.item.value}])
+        //console.log(Checklist)
 
         //formatHelper();
     }
@@ -18,33 +18,67 @@ function CreateChecklist(){
         setTitle(e.target.form.title.value)
     }
     
-    const formatHelper = () =>{
-        setFormattedChecklist(Checklist.map(e => {
-            <div>
-                {e.todo}
-            </div>
-        }))
+    const orderHelper = () =>{
+        let tempArray = Checklist.map((element, index) =>({ order: index, ...element}))
+        setChecklist([...tempArray])
+        console.log(Checklist)
     }
 
     const inc = (e) =>{
-        console.log(Checklist[e.target.id])
-        // TODO splice the above, and insert before like -1 -1
+        let temp = Checklist[e.target.id]
+        let index = e.target.id
+        let tempArray = Checklist
+        tempArray.splice(index, 1)
+        tempArray.splice((index-1), 0, temp)
+        console.log(tempArray)
+        setChecklist([...tempArray])
     }
 
     const dec = (e) =>{
-        console.log(Checklist[e.target.id])
-        // TODO splice the above, and insert before like -1 -1
+        let temp = Checklist[e.target.id]
+        let index = e.target.id
+        let tempArray = Checklist
+        tempArray.splice(index, 1)
+        tempArray.splice((index+1), 0, temp)
+        console.log(tempArray)
+        setChecklist([...tempArray])
+        index = 0 
+    }
+
+    const submitHandler = e =>{
+        e.preventDefault()
+        orderHelper()
+        let requestOptions ={
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                author: 'admin',
+                title: ListTitle,
+                todos: Checklist
+            })
+        }
+        fetch('http://localhost:3001/checklists', requestOptions)
+        console.log(requestOptions)        
     }
 
     return(
         <>
             <h1>Create Checklist</h1>
+            <form onSubmit={submitHandler}>
+                <input type="text" id="title" onSubmit={titleHandler}/>
+                <button onClick={titleHandler}>Set Title</button>
+                <br/>
+                <input type="text" id="item" />
+                <button onClick={addStep}>Add Step</button>
+                <br/>
+                <button type="submit" onClick={submitHandler}>Post List</button>
+            </form>
             <div>
                 <h2>{ListTitle}</h2>
                 {Checklist.map((item, index) =>{
                    return(
                         <div id={index}>
-                            Step {item.order}
+                            Step {index+1}:
                             {item.todo}
                             <button id={index} onClick={inc}>^</button>
                             <button id={index} onClick={dec}>V</button>
@@ -52,16 +86,6 @@ function CreateChecklist(){
                     )
                 })}
             </div>
-            <form>
-                <input type="text" id="title" onSubmit={titleHandler}/>
-                <button onClick={titleHandler}>Set Title</button>
-
-                <br/>
-                <input type="text" id="item" />
-                <button onClick={addStep}>Add Step</button>
-                <br/>
-                <button type="submit">Post List</button>
-            </form>
         </>
     )
 }
