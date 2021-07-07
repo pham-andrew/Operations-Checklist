@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie'
 import {useEffect, useState} from 'react'
 
 function CreateChecklist(){
@@ -9,6 +10,7 @@ function CreateChecklist(){
         e.preventDefault()
         setChecklist([...checkList, {todo: e.target.form.item.value}])
         console.log('from addstep',checkList)
+        //document.getElementsByClassName('form').reset();
         //formatHelper();
     }
 
@@ -62,7 +64,7 @@ function CreateChecklist(){
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                author: 'admin',
+                author: Cookies.get('username'),
                 title: ListTitle,
                 todos: checkListToPost
             })
@@ -74,25 +76,26 @@ function CreateChecklist(){
     return(
         <>
             <h1>Create Checklist</h1>
-            <form onSubmit={submitHandler}>
+            <form className="form" onSubmit={submitHandler}>
                 <input type="text" id="title" onSubmit={titleHandler}/>
-                <button onClick={titleHandler}>Set Title</button>
+                <button className="setTitle" onClick={titleHandler}>Set Title</button>
                 <br/>
-                <input type="text" id="item" />
-                <button onClick={addStep}>Add Step</button>
+                <input type="text" className="item" id="item" />
+                <button className="addStep" onClick={addStep}>Add Step</button>
                 <br/>
-                <button type="submit" onClick={submitHandler}>Post List</button>
+                <button className="submit" type="submit" onClick={submitHandler}>Post List</button>
             </form>
+
             <div>
-                <h2>{ListTitle}</h2>
+                <h2 className="title">{ListTitle}</h2>
                 {checkList.map((item, index) =>{
                    return(
                         <div id={index}>
                             Step {index+1}:
                             {item.todo}
-                            <button id={index} onClick={inc}>⬆️</button>
-                            <button id={index} onClick={dec}>⬇️</button>
-                            <button id={index} onClick={del}>❌</button>
+                            <button id={index} className='inc' onClick={inc}>⬆️</button>
+                            <button id={index} className="dec" onClick={dec}>⬇️</button>
+                            <button id={index} className="del" onClick={del}>❌</button>
                         </div>
                     )
                 })}
