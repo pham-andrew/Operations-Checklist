@@ -3,17 +3,29 @@ const app = express()
 const port = 3001
 const db = require("./db")
 const session = require("express-session")
+const cookieParser = require('cookie-parser')
+
 
 var cors = require('cors')
-app.use(cors())
+app.use(cors({
+    credentials:true,
+    origin:"http://localhost:3000"
+}))
 app.use(express.json())
-// app.use(session({secret: "super secret password", cookie: {maxAge: 60000}}))
+app.use(session({
+    name: 'checklist_cookie',
+    secret: "super secret password"
+}))
 
-var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
-    //console.log(req.session.user)
-    res.send('Hello World!')
+    console.log(req.session.user)
+    if( req.session.user ){
+        res.send(`Hello ${req.session.userID}:${req.session.user}`)
+    } else {
+        res.send('Hello user. Please login.')
+    }
 });
 
 app.get('/user', (req, res) => {
@@ -81,28 +93,27 @@ app.get('/todos/:id', (req, res) => {
 //     }
 //  });
 
-/* app.post('/login', (req, res) => {
+ app.post('/login', (req, res) => {
     console.log(req.body)
     var auth = false
     db.query(`SELECT * FROM users WHERE username = '${req.body.username}' AND password = '${req.body.password}'`)
     .then(data => {
+        console.log(data.rows[0].id)
         if(data.rows.length > 0){
-            req.session.user = req.body.username;
-            res.status(200)
-            // res.redirect('/protected_page');
+            req.session.user = req.body.username
+            req.session.userID = data.rows[0].id
+            res.cookie('username', `${req.body.username}`).send('Logged in').status(200)
         } else {
-            res.status(401)
+            res.send('Invalid credentials.').status(401)
         }
     })
-    res.end()
-}); */
+}); 
 
 app.post('/user', (req, res) => {
     //console.log(req.body.username)
     if(req.body.username && req.body.password){
         db.query(`INSERT INTO users ( username, password ) VALUES ('${req.body.username}', '${req.body.password}');`)
         .then(data => {
-            //console.log(data.rows)
             res.status(200)
         })
     }
