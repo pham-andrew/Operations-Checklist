@@ -1,15 +1,14 @@
 import {useEffect, useState} from 'react'
 
 function CreateChecklist(){
-    let [Checklist, setChecklist] = useState([])
+    let [checkList, setChecklist] = useState([])
     let [ListTitle, setTitle] = useState('Checklist Preview')
     let [formattedChecklist, setFormattedChecklist] = useState([])
 
     const addStep = (e) =>{
         e.preventDefault()
-        setChecklist([...Checklist, {todo: e.target.form.item.value}])
-        //console.log(Checklist)
-
+        setChecklist([...checkList, {todo: e.target.form.item.value}])
+        console.log('from addstep',checkList)
         //formatHelper();
     }
 
@@ -18,16 +17,17 @@ function CreateChecklist(){
         setTitle(e.target.form.title.value)
     }
     
-    const orderHelper = () =>{
-        let tempArray = Checklist.map((element, index) =>({ order: index, ...element}))
-        setChecklist([...tempArray])
-        console.log(Checklist)
+    const orderChecklist=()=>{
+        let tempArray = checkList
+        tempArray = checkList.map((element, index) =>({ order: index, ...element}))
+        setChecklist(tempArray)
+        return tempArray
     }
 
     const inc = (e) =>{
-        let temp = Checklist[e.target.id]
+        let temp = checkList[e.target.id]
         let index = e.target.id
-        let tempArray = Checklist
+        let tempArray = checkList
         tempArray.splice(index, 1)
         tempArray.splice((index-1), 0, temp)
         console.log(tempArray)
@@ -35,9 +35,9 @@ function CreateChecklist(){
     }
 
     const dec = (e) =>{
-        let temp = Checklist[e.target.id]
+        let temp = checkList[e.target.id]
         let index = e.target.id
-        let tempArray = Checklist
+        let tempArray = checkList
         tempArray.splice(index, 1)
         tempArray.splice((index+1), 0, temp)
         console.log(tempArray)
@@ -45,20 +45,30 @@ function CreateChecklist(){
         index = 0 
     }
 
-    const submitHandler = e =>{
+    const del = (e) =>{
+        let temp = checkList[e.target.id]
+        let index = e.target.id
+        let tempArray = checkList
+        tempArray.splice(index, 1)
+        setChecklist([...tempArray])
+        index = 0 
+    }
+
+    async function submitHandler(e){
         e.preventDefault()
-        orderHelper()
-        let requestOptions ={
+        let checkListToPost = orderChecklist()
+        console.log('checkList',checkListToPost)
+        let requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 author: 'admin',
                 title: ListTitle,
-                todos: Checklist
+                todos: checkListToPost
             })
         }
-        fetch('http://localhost:3001/checklists', requestOptions)
-        console.log(requestOptions)        
+        await fetch('http://localhost:3001/checklists', requestOptions)
+        console.log(requestOptions.body)        
     }
 
     return(
@@ -75,13 +85,14 @@ function CreateChecklist(){
             </form>
             <div>
                 <h2>{ListTitle}</h2>
-                {Checklist.map((item, index) =>{
+                {checkList.map((item, index) =>{
                    return(
                         <div id={index}>
                             Step {index+1}:
                             {item.todo}
-                            <button id={index} onClick={inc}>^</button>
-                            <button id={index} onClick={dec}>V</button>
+                            <button id={index} onClick={inc}>⬆️</button>
+                            <button id={index} onClick={dec}>⬇️</button>
+                            <button id={index} onClick={del}>❌</button>
                         </div>
                     )
                 })}
