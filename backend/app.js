@@ -20,7 +20,7 @@ app.use(session({
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
-    console.log(req.session.user)
+    //console.log(req.session.user)
     if( req.session.user ){
         res.send(`Hello ${req.session.userID}:${req.session.user}`)
     } else {
@@ -94,11 +94,11 @@ app.get('/todos/:id', (req, res) => {
 //  });
 
  app.post('/login', (req, res) => {
-    console.log(req.body)
+    //console.log(req.body)
     var auth = false
     db.query(`SELECT * FROM users WHERE username = '${req.body.username}' AND password = '${req.body.password}'`)
     .then(data => {
-        console.log(data.rows[0].id)
+        //console.log(data.rows[0].id)
         if(data.rows.length > 0){
             req.session.user = req.body.username
             req.session.userID = data.rows[0].id
