@@ -10,6 +10,11 @@ import Cookies from 'js-cookie'
 import PrivateRoute from './Components/PrivateRoute'
 import Container from  '@material-ui/core/Container'
 import { Paper, AppBar, Typography, Toolbar } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core';
+import { flexbox } from '@material-ui/system';
+import { createTheme } from '@material-ui/core/styles';
+import purple from '@material-ui/core/colors/purple';
+import { MuiThemeProvider } from '@material-ui/core';
 
 
 const isAuth = {
@@ -19,32 +24,57 @@ const isAuth = {
 let loggedElement = <a id="login" href="/login">Login </a>
 let loggedRoute =  <Route path="/login"><Login /></Route>
 
-const setAuth=()=>{
-  if(Cookies.get('username')){
-    isAuth.isAuthenticated = true
-    loggedElement = <a id="logout" href="/logout"><Typography variant="h8" color="inherit" >Logout</Typography> </a>
-    loggedRoute =  <Route path="/logout"><Logout /></Route>
-  } else {
-    isAuth.isAuthenticated = false
-    loggedElement = <a id="login" href="/login"><Typography variant="h8" color="inherit" >Login </Typography></a>
-    loggedRoute =  <Route path="/login"><Login /></Route>
+const useStyles = makeStyles({
+  root: {
+    width: '100%',
+    maxWidth: 500,
+    display: 'inline-flex'
+  },
+  typo: {
+    alignSelf: 'center'
   }
-}
+});
 
-setAuth()
+
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#01579b',
+      },
+      secondary: {
+        main: '#e64a19',
+      },
+    }, 
+});
+
 
 function App() {
- 
+  const classes = useStyles();
+  
+  const setAuth=()=>{
+    if(Cookies.get('username')){
+      isAuth.isAuthenticated = true
+      loggedElement = <a id="logout" href="/logout"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Logout</Typography> </a>
+      loggedRoute =  <Route path="/logout"><Logout /></Route>
+    } else {
+      isAuth.isAuthenticated = false
+      loggedElement = <a id="login" href="/login"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Login </Typography></a>
+      loggedRoute =  <Route path="/login"><Login /></Route>
+    }
+  }
+  
+  setAuth()
   return (
     <Container maxWidth="sm">
       <Paper variant="outlined" square>
         <Router>
+        <MuiThemeProvider theme = { theme }>
           <AppBar position="sticky">
           <Toolbar variant="dense">
-            <div>
-                <a id="home" href="/"><Typography variant="h8" color="inherit" >Home</Typography> </a>
+            <div className={classes.root}>
+                <a id="home" href="/"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Home</Typography> </a>
                 {loggedElement}
-                <a id="create" href="/create"><Typography variant="h8" color="inherit" >Create a checklist</Typography></a>
+                <a id="create" href="/create"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Create a checklist</Typography></a>
             </div>
             </Toolbar>
           </AppBar>
@@ -63,6 +93,7 @@ function App() {
               <Checklist />
             </Route>
           </Switch>
+          </MuiThemeProvider>
         </Router>
       </Paper>
     </Container>

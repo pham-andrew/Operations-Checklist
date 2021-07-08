@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import { List, ListItem } from '@material-ui/core'
 
 function GetTodos(key){
     const [Todos, setTodos] = useState([])
@@ -20,13 +21,13 @@ function GetTodos(key){
 
     console.log('checkid',key.checklistID)
     return(
-        <>
+        <List>
             {Todos.map(todo => {
                 return(
-                    <li>{todo.todo}</li>
+                    <ListItem>{todo.todo}</ListItem>
                 )
             })}
-        </>
+        </List>
     )
 }
 
