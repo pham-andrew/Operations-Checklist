@@ -5,14 +5,22 @@ const CreateUser = () => {
         e.preventDefault();
         let requestOptions ={
             method: 'POST',
+            credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 username: e.target.username.value,
                 password: e.target.password.value
             })
         }
-        console.log(requestOptions.username)
         fetch('http://localhost:3001/user', requestOptions)
+        .then( res=>{
+            if(res.status === 401){
+                return console.log('invalid credentials')
+            }
+            if(res.status === 200){
+                return window.location.href = '/'
+            }
+        })
     }
 
 

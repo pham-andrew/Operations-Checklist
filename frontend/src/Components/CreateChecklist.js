@@ -1,10 +1,25 @@
 import Cookies from 'js-cookie'
 import {useEffect, useState} from 'react'
+import { List, ListItem, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core'
 
 function CreateChecklist(){
     let [checkList, setChecklist] = useState([])
     let [ListTitle, setTitle] = useState('Checklist Preview')
     let [formattedChecklist, setFormattedChecklist] = useState([])
+    
+
+    const useStyles = makeStyles({
+        root: {
+          width: '100%',
+          maxWidth: 500,
+          display: 'inline-flex'
+        },
+        typo: {
+          alignSelf: 'center'
+        }
+      });
+    const classes = useStyles();
 
     const addStep = (e) =>{
         e.preventDefault()
@@ -75,7 +90,7 @@ function CreateChecklist(){
 
     return(
         <>
-            <h1>Create Checklist</h1>
+            <Typography variant="h6" color="inherit" className={classes.typo}>Create Checklist</Typography>
             <form className="form" onSubmit={submitHandler}>
                 <input type="text" id="title" onSubmit={titleHandler}/>
                 <button className="setTitle" onClick={titleHandler}>Set Title</button>
@@ -87,18 +102,26 @@ function CreateChecklist(){
             </form>
 
             <div>
-                <h2 className="title">{ListTitle}</h2>
+                <Typography variant="h6" color="inherit" className={classes.typo}>{ListTitle}</Typography>
+                <List>
                 {checkList.map((item, index) =>{
                    return(
                         <div id={index}>
+                            <ListItem>
+
+                        
                             Step {index+1}:
                             {item.todo}
                             <button id={index} className='inc' onClick={inc}>⬆️</button>
                             <button id={index} className="dec" onClick={dec}>⬇️</button>
                             <button id={index} className="del" onClick={del}>❌</button>
+                            </ListItem>
                         </div>
+
+                        
                     )
                 })}
+                </List>
             </div>
         </>
     )

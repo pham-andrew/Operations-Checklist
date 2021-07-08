@@ -1,5 +1,6 @@
+import Alert from './Alert'
 
-import { Redirect } from "react-router";
+let alert = <Alert message="Invalid credentials!"/>
 
 const Login = () => {
     const Handler = (e) =>{
@@ -15,9 +16,12 @@ const Login = () => {
         }
         fetch('http://localhost:3001/login', requestOptions)
             .then( res=>{
+                if(res.status === 401){
+                    return console.log('invalid credentials')
+                }
                 if(res.status === 200){
                     return window.location.href = '/'
-                } 
+                }
             })
     }
 

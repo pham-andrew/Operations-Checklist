@@ -18,7 +18,6 @@ function Checklist(){
         <>
             <h1>{Checklist.title}</h1>
             <p>By {Checklist.author}</p>
-            <p>{Checklist.id}</p>
             <GetTodos checklistID={Checklist.id} />
         </>
     )
