@@ -8,6 +8,8 @@ import Checklist from './Components/Checklist';
 import View from './Components/View';
 import Cookies from 'js-cookie'
 import PrivateRoute from './Components/PrivateRoute'
+import Container from  '@material-ui/core/Container'
+import { Paper, AppBar, Typography, Toolbar } from '@material-ui/core'
 
 
 const isAuth = {
@@ -20,11 +22,11 @@ let loggedRoute =  <Route path="/login"><Login /></Route>
 const setAuth=()=>{
   if(Cookies.get('username')){
     isAuth.isAuthenticated = true
-    loggedElement = <a id="logout" href="/logout">Logout </a>
+    loggedElement = <a id="logout" href="/logout"><Typography variant="h8" color="inherit" >Logout</Typography> </a>
     loggedRoute =  <Route path="/logout"><Logout /></Route>
   } else {
     isAuth.isAuthenticated = false
-    loggedElement = <a id="login" href="/login">Login </a>
+    loggedElement = <a id="login" href="/login"><Typography variant="h8" color="inherit" >Login </Typography></a>
     loggedRoute =  <Route path="/login"><Login /></Route>
   }
 }
@@ -32,29 +34,38 @@ const setAuth=()=>{
 setAuth()
 
 function App() {
+ 
   return (
-    <Router>
-      <div>
-          <a id="home" href="/">Home </a>
-          {loggedElement}
-          <a id="create" href="/create">Create a checklist</a>
-      </div>
-      <Switch>
-        <PrivateRoute exact path="/" isAuth={isAuth}>
-          <View/>
-        </PrivateRoute>
-        <PrivateRoute path="/create" isAuth={isAuth}>
-          <CreateChecklist />
-        </PrivateRoute>
-        {loggedRoute}
-        <Route path="/signup">
-          <CreateUser />
-        </Route>
-        <Route exact path="/checklist/:id">
-          <Checklist />
-        </Route>
-      </Switch>
-    </Router>
+    <Container maxWidth="sm">
+      <Paper variant="outlined" square>
+        <Router>
+          <AppBar position="sticky">
+          <Toolbar variant="dense">
+            <div>
+                <a id="home" href="/"><Typography variant="h8" color="inherit" >Home</Typography> </a>
+                {loggedElement}
+                <a id="create" href="/create"><Typography variant="h8" color="inherit" >Create a checklist</Typography></a>
+            </div>
+            </Toolbar>
+          </AppBar>
+          <Switch>
+            <PrivateRoute exact path="/" isAuth={isAuth}>
+              <View/>
+            </PrivateRoute>
+            <PrivateRoute path="/create" isAuth={isAuth}>
+              <CreateChecklist />
+            </PrivateRoute>
+            {loggedRoute}
+            <Route path="/signup">
+              <CreateUser />
+            </Route>
+            <Route exact path="/checklist/:id">
+              <Checklist />
+            </Route>
+          </Switch>
+        </Router>
+      </Paper>
+    </Container>
   );
 }
 

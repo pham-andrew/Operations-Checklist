@@ -23,7 +23,7 @@ function GetTodos(key){
         <>
             {Todos.map(todo => {
                 return(
-                    <li>Item {todo.todo}</li>
+                    <li>{todo.todo}</li>
                 )
             })}
         </>
