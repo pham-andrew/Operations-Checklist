@@ -1,6 +1,10 @@
 # Project2-Team6
 # Project Title - Ops Check
 
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/compatibility-ie-6.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://forthebadge.com)
+
 # Overview
 A checklist management system for a small workshop. Create checklists, assign users, and view completed checklists. Help create accountability for digital tasks.
 
