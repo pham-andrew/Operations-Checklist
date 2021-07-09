@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import {useEffect, useState} from 'react'
-import { List, ListItem, Typography } from '@material-ui/core'
+import { List, ListItem, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 
 function CreateChecklist(){
@@ -81,7 +81,8 @@ function CreateChecklist(){
             body: JSON.stringify({
                 author: Cookies.get('username'),
                 title: ListTitle,
-                todos: checkListToPost
+                todos: checkListToPost,
+                user_id: Cookies.get('userId')
             })
         }
         await fetch('http://localhost:3001/checklists', requestOptions)
@@ -89,7 +90,8 @@ function CreateChecklist(){
     }
 
     return(
-        <>
+        <Grid container spacing={5} justifyContent="space-around">
+        <Grid item>
             <Typography variant="h6" color="inherit" className={classes.typo}>Create Checklist</Typography>
             <form className="form" onSubmit={submitHandler}>
                 <input type="text" id="title" onSubmit={titleHandler}/>
@@ -123,7 +125,7 @@ function CreateChecklist(){
                 })}
                 </List>
             </div>
-        </>
+        </Grid></Grid>
     )
 }
 

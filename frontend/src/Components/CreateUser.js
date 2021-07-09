@@ -1,4 +1,7 @@
-
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
 
 const CreateUser = () => {
     const Handler = (e) =>{
@@ -26,11 +29,20 @@ const CreateUser = () => {
 
     return(
         <div>
-            <form onSubmit={Handler}>
-                Username: <input type="text" id="username" /><br/>
-                Password: <input type="text" id="password"/><br/>
-                <button type="submit" >Create Account</button>
-            </form>
+            {/* <Alert severity="error" display="none">Invalid Credentials</Alert> */}
+            <Grid container container justify="center">
+                <form onSubmit={Handler}>
+                    <Grid item xs={12}>
+                        <TextField id="username" label="Username" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField id="password" type="password" label="Password" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button variant="contained" id="signup" color="primary" type="submit" >Create Account</Button>
+                    </Grid>
+                </form>
+            </Grid>
         </div>
     )
 }

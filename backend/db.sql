@@ -49,3 +49,4 @@ CREATE TABLE todos_list(
 
 --Dummy data
 INSERT INTO users ( username, password, admin) VALUES ( 'admin','superpassword',true);
+INSERT INTO users ( username, password) VALUES ( 'testuser','password');

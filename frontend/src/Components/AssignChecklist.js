@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, Typography, Grid } from '@material-ui/core'
-import Cookies from 'js-cookie'
+import { Card, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles({
     root: {
@@ -31,21 +30,20 @@ function View(){
     const [Checklist, setChecklist] = useState([])
     useEffect(() =>{
      async function fetchData(){
-        await fetch(`http://localhost:3001/checklistsAsUser?user_id=${Cookies.get('userId')}`)
+        await fetch('http://localhost:3001/checklists')
         .then(res => res.json())
         .then(json => setChecklist(json))
     }
      fetchData()
  }, [])
 
- function viewHandler(e){
-    window.location.href=`/checklist/${e.target.id}`
- }
+ // WHEN CLICKING ON A CHECKLIST TO ASSIGN USERS
+ // OPEN A MODAL WITH USERS
+ // HAVE A TOGGLE STATE
+
 
  return(
-  <Grid container spacing={5} justifyContent="space-around">
-  <Grid item>
-       <Typography>Your Checklists:</Typography>
+     <div>
          {Checklist.map(element =>{
              return(
         <Card variant="outlined" className={classes.card} id={element.id} onClick={viewHandler}>
@@ -57,7 +55,7 @@ function View(){
             </Typography>
         </Card>)
      })}
-     </Grid></Grid>
+     </div>
  )
 }
 

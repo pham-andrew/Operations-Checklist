@@ -1,8 +1,20 @@
-import Alert from './Alert'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
+import React from 'react';
+import Collapse from '@material-ui/core/Collapse';
 
-let alert = <Alert message="Invalid credentials!"/>
+const styles = {
+    button:{
+        margin: "8px"
+    }
+}
 
 const Login = () => {
+
+    const [open, setOpen] = React.useState(false);
+
     const Handler = (e) =>{
         e.preventDefault();
         let requestOptions ={
@@ -17,6 +29,7 @@ const Login = () => {
         fetch('http://localhost:3001/login', requestOptions)
             .then( res=>{
                 if(res.status === 401){
+                    setOpen(true)
                     return console.log('invalid credentials')
                 }
                 if(res.status === 200){
@@ -25,15 +38,27 @@ const Login = () => {
             })
     }
 
-
     return(
         <div>
-            <form onSubmit={Handler}>
-                Username: <input type="text" id="username" /><br/>
-                Password: <input type="password" id="password"/><br/>
-                <button type="submit" >Sign in</button>
-            </form>
-            <p> Or <a id="signup" href="/signup">sign up</a> if you don't have an account.</p>
+            <Collapse in={open}>
+                <Alert severity="error" >Invalid Credentials</Alert>
+            </Collapse>
+            <Grid container justify="center" >
+                <form onSubmit={Handler}>
+                    <Grid item xs={12}>
+                        <TextField id="username" label="Username" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField id="password" type="password" label="Password" />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button id="sign-in" variant="contained" color="primary" type="submit" style={styles.button}>Sign In</Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button id="sign-up" variant="contained" color="secondary" href="/signup" style={styles.button}>Sign Up</Button>
+                    </Grid>
+                </form>
+            </Grid>
         </div>
     )
 }

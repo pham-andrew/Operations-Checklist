@@ -13,25 +13,39 @@ import { Paper, AppBar, Typography, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core';
 import { flexbox } from '@material-ui/system';
 import { createTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
 import { MuiThemeProvider } from '@material-ui/core';
-
+import AssignRole from './Components/AssignRole'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Completed from './Components/Completed';
 
 const isAuth = {
   isAuthenticated: false,
 }
 
-let loggedElement = <a id="login" href="/login">Login </a>
+// let loggedElement = <a id="login" href="/login">Login </a>
+let loggedElement =  <Tab label="Login" id="login" href="/login" />
 let loggedRoute =  <Route path="/login"><Login /></Route>
+let createElement = ''
+let createRoute = <Route path="/create"><CreateChecklist /></Route>
+let assignElement = ''
+let assignRoute = <Route path="/assign"><AssignRole/></Route>
+let completedElement = ''
+let completedRoute = <Route path="/completed"><Completed/></Route>
+let showName = ''
 
 const useStyles = makeStyles({
   root: {
     width: '100%',
-    maxWidth: 500,
+    maxWidth: 1000,
     display: 'inline-flex'
   },
   typo: {
     alignSelf: 'center'
+  },
+  tabs:{
+    width: '10%',
+    maxWidth: 50
   }
 });
 
@@ -39,7 +53,7 @@ const useStyles = makeStyles({
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#01579b',
+        main: '#2f4ca1',
       },
       secondary: {
         main: '#e64a19',
@@ -50,31 +64,44 @@ const theme = createTheme({
 
 function App() {
   const classes = useStyles();
-  
+  console.log(showName)
   const setAuth=()=>{
     if(Cookies.get('username')){
       isAuth.isAuthenticated = true
-      loggedElement = <a id="logout" href="/logout"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Logout</Typography> </a>
+      //loggedElement = <a id="logout" href="/logout"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Logout</Typography> </a>
+      loggedElement = <Tab label="Logout" id="logout" href="/logout" className={classes.tabs}/>
       loggedRoute =  <Route path="/logout"><Logout /></Route>
+      showName = <Typography>{`Signed in as ${Cookies.get('username')}`}</Typography> 
+
+      createElement = <Tab label="Create a CheckList" id="create" href="/create" className={classes.tabs}/>
+      assignElement = <Tab label="Assign" id="assign" href="/assign" className={classes.tabs}/>
+      completedElement = <Tab label="Completed" id="completed" href="/completed" className={classes.tabs}/>
     } else {
       isAuth.isAuthenticated = false
-      loggedElement = <a id="login" href="/login"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Login </Typography></a>
+      // loggedElement = <a id="login" href="/login"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Login </Typography></a>
+      loggedElement = <Tab label="Login" id="login" href="/login" className={classes.tabs}/>
       loggedRoute =  <Route path="/login"><Login /></Route>
     }
   }
   
   setAuth()
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="md">
       <Paper variant="outlined" square>
         <Router>
         <MuiThemeProvider theme = { theme }>
+          <img src={process.env.PUBLIC_URL + "/design3.png"}  alt="a cool image"/>
           <AppBar position="sticky">
           <Toolbar variant="dense">
             <div className={classes.root}>
-                <a id="home" href="/"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Home</Typography> </a>
-                {loggedElement}
-                <a id="create" href="/create"><Typography variant="subtitle2" color="inherit" className={classes.typo}>Create a checklist</Typography></a>
+                <Tabs >
+                  <Tab className={classes.tabs} label="Home" id="home" href="/" className={classes.tabs}/>
+                  {loggedElement}
+                  {createElement}
+                  {assignElement}
+                  {completedElement}
+                  {/* {showName} */}
+                </Tabs>
             </div>
             </Toolbar>
           </AppBar>
@@ -82,10 +109,13 @@ function App() {
             <PrivateRoute exact path="/" isAuth={isAuth}>
               <View/>
             </PrivateRoute>
-            <PrivateRoute path="/create" isAuth={isAuth}>
+            {/* <PrivateRoute path="/create" isAuth={isAuth}>
               <CreateChecklist />
-            </PrivateRoute>
+            </PrivateRoute> */}
             {loggedRoute}
+            {createRoute}
+            {assignRoute}
+            {completedRoute}
             <Route path="/signup">
               <CreateUser />
             </Route>

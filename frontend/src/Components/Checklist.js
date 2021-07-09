@@ -1,5 +1,9 @@
 import {useState, useEffect} from 'react'
 import GetTodos from './GetTodos'
+import React from 'react';
+import List from '@material-ui/core/List';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 function Checklist(){
     const [Checklist, setChecklist] = useState({})
@@ -15,11 +19,25 @@ function Checklist(){
     }, [])
 
     return(
-        <>
-            <h1>{Checklist.title}</h1>
-            <p>By {Checklist.author}</p>
-            <GetTodos checklistID={Checklist.id} />
-        </>
+        <Grid className="list-container" container spacing={2}>
+            <Grid item>
+                <Typography variant="h4" >
+                    {Checklist.title}
+                </Typography>
+                <Typography variant="h6" >
+                    {Checklist.author}
+                </Typography>
+                <div >
+                    <List>
+                        <GetTodos checklistID={Checklist.id} />
+                    </List>
+                </div>
+            </Grid>
+
+
+
+
+        </Grid>
     )
 }
 
