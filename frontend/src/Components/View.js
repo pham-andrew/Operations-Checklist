@@ -43,7 +43,7 @@ function View(){
  }
 
  return(
-  <Grid container spacing={5} justifyContent="space-around">
+  <Grid container spacing={12} justifyContent="space-around">
   <Grid item>
        <Typography>Your Checklists:</Typography>
          {Checklist.map(element =>{

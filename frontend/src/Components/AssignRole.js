@@ -34,7 +34,8 @@ function AssignRole(){
           minWidth: 650,
         },
         lilMargin: {
-            margin: 5
+            margin: 5,
+            color:"#FFFFFF"
         },
         formControl:{
             maxWidth: 30

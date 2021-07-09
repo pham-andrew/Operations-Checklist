@@ -24,9 +24,6 @@ function CreateChecklist(){
     const addStep = (e) =>{
         e.preventDefault()
         setChecklist([...checkList, {todo: e.target.form.item.value}])
-        console.log('from addstep',checkList)
-        //document.getElementsByClassName('form').reset();
-        //formatHelper();
     }
 
     const titleHandler = (e) =>{
@@ -90,7 +87,7 @@ function CreateChecklist(){
     }
 
     return(
-        <Grid container spacing={5} justifyContent="space-around">
+        <Grid container spacing={12} justifyContent="space-around">
         <Grid item>
             <Typography variant="h6" color="inherit" className={classes.typo}>Create Checklist</Typography>
             <form className="form" onSubmit={submitHandler}>

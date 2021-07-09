@@ -45,15 +45,17 @@ const useStyles = makeStyles({
   },
   tabs:{
     width: '10%',
-    maxWidth: 50
-  }
+    maxWidth: 50,
+    color: '#FFFFFF'
+  },
+
 });
 
 
 const theme = createTheme({
     palette: {
       primary: {
-        main: '#2f4ca1',
+        main: '#35c1f1',
       },
       secondary: {
         main: '#e64a19',
@@ -90,8 +92,8 @@ function App() {
       <Paper variant="outlined" square>
         <Router>
         <MuiThemeProvider theme = { theme }>
-          <img src={process.env.PUBLIC_URL + "/design3.png"}  alt="a cool image"/>
-          <AppBar position="sticky">
+          <img src={process.env.PUBLIC_URL + "/design4.png"}  alt="a cool image"/>
+          <AppBar position="sticky" style={{marginTop: -4}}>
           <Toolbar variant="dense">
             <div className={classes.root}>
                 <Tabs >

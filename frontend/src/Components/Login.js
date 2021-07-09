@@ -7,7 +7,9 @@ import Collapse from '@material-ui/core/Collapse';
 
 const styles = {
     button:{
-        margin: "8px"
+        margin: "8px",
+        color: "#FFFFFF",
+        width: "50%"
     }
 }
 

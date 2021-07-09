@@ -19,13 +19,13 @@ function Checklist(){
     }, [])
 
     return(
-        <Grid className="list-container" container spacing={2}>
+        <Grid className="list-container" container spacing={10} justifyContent="center">
             <Grid item>
                 <Typography variant="h4" >
                     {Checklist.title}
                 </Typography>
                 <Typography variant="h6" >
-                    {Checklist.author}
+                    By:{Checklist.author}
                 </Typography>
                 <div >
                     <List>
@@ -33,10 +33,6 @@ function Checklist(){
                     </List>
                 </div>
             </Grid>
-
-
-
-
         </Grid>
     )
 }
