@@ -8,10 +8,15 @@
 A checklist management system for a small workshop. Create checklists, assign users, and view completed checklists. Help create accountability for digital tasks.
 
 ## Table of Contents
+
 -Description
+
 -Database Schema
+
 -Installation
+
 -Usage
+
 ## Description
 Create checklists, standard operating procedures, or other workflow tasks. Manage users for your checklists, and view the completed ones they sign off on.
 
